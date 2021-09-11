@@ -10,7 +10,9 @@ async fn main() {
         draw_circle(screen_width() - 30.0, screen_height() - 30.0, 15.0, YELLOW);
 
         draw_text("IT WORKS!", 20.0, 20.0, 30.0, DARKGRAY);
-
+        if is_key_down(KeyCode::Right) {
+            draw_line(20.0, 20.0, 120.0, 100.0, 15.0, BROWN);
+        }
         next_frame().await
     }
 }
