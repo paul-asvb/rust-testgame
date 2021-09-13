@@ -13,6 +13,9 @@ async fn main() {
         if is_key_down(KeyCode::Right) {
             draw_line(20.0, 20.0, 120.0, 100.0, 15.0, BROWN);
         }
+        if is_key_down(KeyCode::Enter) {
+            draw_text("IT WORKS!", 220.0, 220.0, 30.0, BLUE);
+        }
         next_frame().await
     }
 }
