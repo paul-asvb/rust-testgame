@@ -1,5 +1,5 @@
 use cgmath::Vector2;
-use macroquad::prelude::*;
+use macroquad::{input, prelude::*};
 
 #[macroquad::main("BasicShapes")]
 async fn main() {
@@ -9,6 +9,24 @@ async fn main() {
 
     loop {
         //clear_background(RED);
+        let mut center = Vector2 {
+            x: screen_width() / 2.0,
+            y: screen_height() / 2.0,
+        };
+
+        let mouse_position = Vector2 {
+            x: input::mouse_position().0,
+            y: input::mouse_position().1,
+        };
+
+        draw_line(
+            center.x,
+            center.y,
+            mouse_position.x,
+            mouse_position.y,
+            15.0,
+            BLUE,
+        );
 
         draw_line(40.0, 40.0, 100.0, 200.0, 15.0, BLUE);
         draw_rectangle(screen_width() / 2.0 - 60.0, 100.0, 120.0, 60.0, GREEN);
@@ -32,6 +50,7 @@ async fn main() {
         if is_key_down(KeyCode::Enter) {
             draw_text("IT WORKS!", 220.0, 220.0, 30.0, RED);
         }
+
         next_frame().await
     }
 }
