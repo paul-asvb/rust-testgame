@@ -9,7 +9,7 @@ async fn main() {
 
     loop {
         //clear_background(RED);
-        let mut center = Vector2 {
+        let center = Vector2 {
             x: screen_width() / 2.0,
             y: screen_height() / 2.0,
         };
