@@ -1,4 +1,4 @@
-use cgmath::Vector2;
+use cgmath::{InnerSpace, Vector2};
 use macroquad::{input, prelude::*};
 
 #[macroquad::main("BasicShapes")]
@@ -26,6 +26,22 @@ async fn main() {
             mouse_position.y,
             15.0,
             BLUE,
+        );
+
+        println!("{:?}", mouse_position.normalize());
+
+        let norm = Vector2 {
+            x: center.x + mouse_position.x,
+            y: center.x + mouse_position.y
+        };
+
+        draw_line(
+            center.x + 20.0,
+            center.y + 20.0,
+            norm.x,
+            norm.y,
+            10.0,
+            GOLD,
         );
 
         draw_line(40.0, 40.0, 100.0, 200.0, 15.0, BLUE);
