@@ -4,3 +4,6 @@ build-wasm:
 
 build-macos:
 	cargo build --target x86_64-apple-darwin --release
+
+watch:
+	cargo watch -x run
