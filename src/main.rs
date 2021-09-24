@@ -1,11 +1,11 @@
-use std::ops::Mul;
-
 use cgmath::{InnerSpace, Vector2};
 use macroquad::{input, prelude::*};
 
 struct Mover {
     location: Vector2<f32>,
     velocity: Vector2<f32>,
+    acceleration: Vector2<f32>,
+    limit: Vector2<f32>,
 }
 
 impl Mover {
@@ -24,6 +24,10 @@ impl Mover {
     }
 
     fn update(&mut self) {
+        self.velocity = self.velocity + self.acceleration;
+        if self.velocity.x > self.limit.x || self.velocity.y > self.limit.y {
+            self.velocity = self.limit
+        }
         self.location = self.location + self.velocity;
     }
 
@@ -38,7 +42,9 @@ async fn main() {
     const SIZE: f32 = 20.0;
     let mut my_mover = Mover {
         location: Vector2 { x: 20.0, y: 20.0 },
-        velocity: Vector2 { x: 10.0, y: 10.0 },
+        velocity: Vector2 { x: 0.01, y: 0.01 },
+        acceleration: Vector2 { x: 0.01, y: 0.01 },
+        limit: Vector2 { x: 10.01, y: 10.01 },
     };
 
     loop {
@@ -62,12 +68,6 @@ async fn main() {
             BLUE,
         );
 
-        let norm = Vector2 {
-            x: center.x + mouse_position.x,
-            y: center.x + mouse_position.y,
-        };
-
-        draw_line(center.x + 20.0, center.y + 20.0, norm.x, norm.y, 10.0, GOLD);
         mouse_position = mouse_position - center;
         mouse_position = mouse_position.normalize();
         mouse_position = mouse_position * 250.0;
