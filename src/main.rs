@@ -1,3 +1,5 @@
+use std::ops::Mul;
+
 use cgmath::{InnerSpace, Vector2};
 use macroquad::{input, prelude::*};
 
@@ -46,7 +48,7 @@ async fn main() {
             y: screen_height() / 2.0,
         };
 
-        let mouse_position = Vector2 {
+        let mut mouse_position = Vector2 {
             x: input::mouse_position().0,
             y: input::mouse_position().1,
         };
@@ -56,7 +58,7 @@ async fn main() {
             center.y,
             mouse_position.x,
             mouse_position.y,
-            15.0,
+            20.0,
             BLUE,
         );
 
@@ -66,6 +68,16 @@ async fn main() {
         };
 
         draw_line(center.x + 20.0, center.y + 20.0, norm.x, norm.y, 10.0, GOLD);
+        mouse_position = mouse_position - center;
+        mouse_position = mouse_position.normalize();
+        mouse_position = mouse_position * 250.0;
+
+        let norm = Vector2 {
+            x: center.x + mouse_position.x,
+            y: center.y + mouse_position.y,
+        };
+
+        draw_line(center.x, center.y, norm.x, norm.y, 10.0, GOLD);
 
         draw_line(40.0, 40.0, 100.0, 200.0, 15.0, BLUE);
         draw_rectangle(screen_width() / 2.0 - 60.0, 100.0, 120.0, 60.0, GREEN);
