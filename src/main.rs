@@ -1,4 +1,4 @@
-use cgmath::{InnerSpace, Vector2};
+use cgmath::{num_traits::ToPrimitive, InnerSpace, Vector2};
 use macroquad::{input, prelude::*};
 
 struct Mover {
@@ -24,6 +24,10 @@ impl Mover {
     }
 
     fn update(&mut self) {
+        self.acceleration = Vector2 {
+            x: rand::gen_range(0, 10).to_f32().unwrap(),
+            y: rand::gen_range(0, 10).to_f32().unwrap(),
+        };
         self.velocity = self.velocity + self.acceleration;
         if self.velocity.x > self.limit.x || self.velocity.y > self.limit.y {
             self.velocity = self.limit
