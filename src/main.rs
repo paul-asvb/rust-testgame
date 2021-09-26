@@ -142,25 +142,9 @@ async fn main() {
             BLUE,
         );
 
-        let bla = Rect {
-            x: 50.0,
-            y: 50.0,
-            h: 50.0,
-            w: 50.0,
-        };
-
-        let bla1 = Rect {
-            x: 103.0,
-            y: 102.0,
-            h: 120.0,
-            w: 120.0,
-        };
-
-        //
-
         // println!("{:?}", bla.overlaps(&bla1));
 
-        draw_rectangle(bla.x, bla.y, bla.w, bla.h, RED);
+        // draw_rectangle(bla.x, bla.y, bla.w, bla.h, RED);
 
         mouse_position = mouse_position - center;
         mouse_position = mouse_position.normalize();
