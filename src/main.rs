@@ -1,5 +1,9 @@
 use cgmath::{num_traits::ToPrimitive, InnerSpace, Vector2};
-use macroquad::{color::hsl_to_rgb, input, prelude::*};
+use macroquad::{
+    color::{hsl_to_rgb, rgb_to_hsl},
+    input,
+    prelude::*,
+};
 
 fn random_color() -> Color {
     let random_hue = rand::gen_range(0, 100).to_f32().unwrap() / 100.0;
@@ -68,16 +72,17 @@ impl Snake {
 
         check_edges(&mut new_location, width, height);
 
-        let mut new_color = last_part.color;
-        new_color.r = new_color.r + 0.01;
-        if new_color.r > 0.999 {
-            new_color.r = 0.0;
+        let mut new_color = rgb_to_hsl(last_part.color);
+
+        new_color.0 = new_color.0 + 0.01;
+        if new_color.0 > 99.0 {
+            new_color.0 = 0.0;
         }
 
         self.parts.push(Part {
             location: new_location,
             direction: rand_direction,
-            color: new_color,
+            color: hsl_to_rgb(new_color.0, new_color.1, new_color.2),
         })
     }
 
