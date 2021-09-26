@@ -1,11 +1,73 @@
 use cgmath::{num_traits::ToPrimitive, InnerSpace, Vector2};
-use macroquad::{input, prelude::*};
+use macroquad::{color::hsl_to_rgb, input, prelude::*};
 
+fn random_color() -> Color {
+    let random_hue = rand::gen_range(0, 100).to_f32().unwrap() / 100.0;
+    hsl_to_rgb(random_hue, 0.5, 0.5)
+}
 struct Mover {
     location: Vector2<f32>,
     velocity: Vector2<f32>,
     acceleration: Vector2<f32>,
     limit: Vector2<f32>,
+}
+
+struct Part {
+    location: Vector2<f32>,
+    direction: Vector2<f32>,
+    color: Color,
+}
+
+struct Snake {
+    parts: Vec<Part>,
+}
+
+fn new_snake() -> Snake {
+    let topspeed = 10;
+    let start_position = Vector2 { x: 300.0, y: 300.0 };
+
+    let start_direction = Vector2 {
+        x: rand::gen_range(-topspeed, topspeed).to_f32().unwrap() / 100.0,
+        y: rand::gen_range(-topspeed, topspeed).to_f32().unwrap() / 100.0,
+    };
+
+    let first_part = Part {
+        location: start_position,
+        direction: start_direction,
+        color: random_color(),
+    };
+    Snake {
+        parts: vec![first_part],
+    }
+}
+
+impl Snake {
+    fn add(&mut self) {
+        let topspeed = 100;
+        let rand_direction = Vector2 {
+            x: rand::gen_range(-topspeed, topspeed).to_f32().unwrap(),
+            y: rand::gen_range(-topspeed, topspeed).to_f32().unwrap(),
+        };
+        self.parts.push(Part {
+            location: self.parts[self.parts.len() - 1].location
+                + self.parts[self.parts.len() - 1].direction,
+            direction: rand_direction,
+            color: random_color(),
+        })
+    }
+
+    fn draw(&self) {
+        for part in &self.parts {
+            draw_line(
+                part.location.x,
+                part.location.y,
+                part.location.x + part.direction.x,
+                part.location.y + part.direction.y,
+                12.0,
+                part.color,
+            )
+        }
+    }
 }
 
 impl Mover {
@@ -24,10 +86,12 @@ impl Mover {
     }
 
     fn update(&mut self) {
+        let topspeed = 50;
         self.acceleration = Vector2 {
-            x: rand::gen_range(0, 10).to_f32().unwrap(),
-            y: rand::gen_range(0, 10).to_f32().unwrap(),
+            x: rand::gen_range(-topspeed, topspeed).to_f32().unwrap() / 100.0,
+            y: rand::gen_range(-topspeed, topspeed).to_f32().unwrap() / 100.0,
         };
+
         self.velocity = self.velocity + self.acceleration;
         if self.velocity.x > self.limit.x || self.velocity.y > self.limit.y {
             self.velocity = self.limit
@@ -39,6 +103,7 @@ impl Mover {
         draw_circle(self.location.x, self.location.y, 30.0, PINK);
     }
 }
+
 #[macroquad::main("BasicShapes")]
 async fn main() {
     let mut position = Vector2 { x: 20.0, y: 20.0 };
@@ -51,7 +116,12 @@ async fn main() {
         limit: Vector2 { x: 10.01, y: 10.01 },
     };
 
+    let mut snake = new_snake();
+
     loop {
+        snake.add();
+        snake.draw();
+
         //clear_background(RED);
         let center = Vector2 {
             x: screen_width() / 2.0,
@@ -71,6 +141,26 @@ async fn main() {
             20.0,
             BLUE,
         );
+
+        let bla = Rect {
+            x: 50.0,
+            y: 50.0,
+            h: 50.0,
+            w: 50.0,
+        };
+
+        let bla1 = Rect {
+            x: 103.0,
+            y: 102.0,
+            h: 120.0,
+            w: 120.0,
+        };
+
+        //
+
+        // println!("{:?}", bla.overlaps(&bla1));
+
+        draw_rectangle(bla.x, bla.y, bla.w, bla.h, RED);
 
         mouse_position = mouse_position - center;
         mouse_position = mouse_position.normalize();
