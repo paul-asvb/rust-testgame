@@ -5,6 +5,21 @@ fn random_color() -> Color {
     let random_hue = rand::gen_range(0, 100).to_f32().unwrap() / 100.0;
     hsl_to_rgb(random_hue, 0.5, 0.5)
 }
+
+fn check_edges(v: &mut Vector2<f32>, width: f32, height: f32) {
+    if v.x > width {
+        v.x = 0.0;
+    } else if v.x < 0.0 {
+        v.x = width;
+    }
+
+    if v.y > height {
+        v.y = 0.0;
+    } else if v.y < 0.0 {
+        v.y = height;
+    }
+}
+
 struct Mover {
     location: Vector2<f32>,
     velocity: Vector2<f32>,
@@ -23,7 +38,7 @@ struct Snake {
 }
 
 fn new_snake() -> Snake {
-    let topspeed = 10;
+    let topspeed = 1;
     let start_position = Vector2 { x: 300.0, y: 300.0 };
 
     let start_direction = Vector2 {
@@ -42,17 +57,27 @@ fn new_snake() -> Snake {
 }
 
 impl Snake {
-    fn add(&mut self) {
-        let topspeed = 100;
+    fn add(&mut self, width: f32, height: f32) {
+        let last_part = &self.parts[self.parts.len() - 1];
+        let topspeed = 30;
         let rand_direction = Vector2 {
             x: rand::gen_range(-topspeed, topspeed).to_f32().unwrap(),
             y: rand::gen_range(-topspeed, topspeed).to_f32().unwrap(),
         };
+        let mut new_location = last_part.location + last_part.direction;
+
+        check_edges(&mut new_location, width, height);
+
+        let mut new_color = last_part.color;
+        new_color.r = new_color.r + 0.01;
+        if new_color.r > 0.999 {
+            new_color.r = 0.0;
+        }
+
         self.parts.push(Part {
-            location: self.parts[self.parts.len() - 1].location
-                + self.parts[self.parts.len() - 1].direction,
+            location: new_location,
             direction: rand_direction,
-            color: random_color(),
+            color: new_color,
         })
     }
 
@@ -119,7 +144,7 @@ async fn main() {
     let mut snake = new_snake();
 
     loop {
-        snake.add();
+        snake.add(screen_width(), screen_height());
         snake.draw();
 
         //clear_background(RED);
