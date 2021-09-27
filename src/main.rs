@@ -4,13 +4,16 @@ mod snake;
 
 #[macroquad::main("BasicShapes")]
 async fn main() {
-    let snakes: Vec<Snake> = [0..10].map(|e| -> Snake { snake::new_snake() }).to_vec();
-
+    let mut snakes: Vec<Snake> = (0..10)
+        .map(|_| -> Snake { snake::new_snake(screen_width(), screen_height()) })
+        .collect::<Vec<Snake>>();
+    println!("{:?}", snakes.len());
     loop {
-        for snake in &snakes {
+        snakes.iter_mut().for_each(|snake| {
             snake.add(screen_width(), screen_height());
             snake.draw();
-        }
+        });
+
         next_frame().await
     }
 }

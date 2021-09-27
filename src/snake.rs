@@ -33,10 +33,13 @@ pub struct Snake {
     parts: Vec<Part>,
 }
 
-pub fn new_snake() -> Snake {
+pub fn new_snake(width: f32, height: f32) -> Snake {
     let topspeed = 1;
-    let start_position = Vector2 { x: 300.0, y: 300.0 };
 
+    let start_position = Vector2 {
+        x: rand::gen_range(0, height as i64).to_f32().unwrap(),
+        y: rand::gen_range(0, width as i64).to_f32().unwrap(),
+    };
     let start_direction = Vector2 {
         x: rand::gen_range(-topspeed, topspeed).to_f32().unwrap() / 100.0,
         y: rand::gen_range(-topspeed, topspeed).to_f32().unwrap() / 100.0,
