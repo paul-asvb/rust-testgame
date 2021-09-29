@@ -8,26 +8,25 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-20.04
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: actions-rs/toolchain@v1
+      - name: install-wasm
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           target: wasm32-unknown-unknown
-      - uses: actions-rs/cargo@v1
+      - name: build-wasm
+        uses: actions-rs/cargo@v1
         with:
           command: build
           args: --target wasm32-unknown-unknown --release
       - name: move public html
         run: mv ./public/index.html ./target/wasm32-unknown-unknown/release/index.html
         shell: bash
-      - name: Deploy
+      - name: update-page
         uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./target/wasm32-unknown-unknown/release/
