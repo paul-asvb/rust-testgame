@@ -1,9 +1,9 @@
 name: Release
 
 on:
-  push:
-    branches:
-      - main # Set a branch name to trigger deployment
+  create:
+    tags:
+      - v*
 
 jobs:
   deploy:
