@@ -4,17 +4,17 @@ use macroquad::{
     prelude::*,
 };
 
-fn check_edges(v: &mut Vector2<f32>, width: f32, height: f32) {
-    if v.x > width {
-        v.x = 0.0;
-    } else if v.x < 0.0 {
-        v.x = width;
+fn check_edges(v: &mut Vector2<f32>) {
+    if v.x > 1.0 {
+        v.x = -1.0;
+    } else if v.x < -1.0 {
+        v.x = 1.0;
     }
 
-    if v.y > height {
-        v.y = 0.0;
-    } else if v.y < 0.0 {
-        v.y = height;
+    if v.y > 1.0 {
+        v.y = -1.0;
+    } else if v.y < -1.0 {
+        v.y = 1.0;
     }
 }
 
@@ -30,19 +30,20 @@ struct Part {
 }
 #[derive(Clone, Debug)]
 pub struct Snake {
+    speed: f32,
     parts: Vec<Part>,
 }
 
-pub fn new_snake(width: f32, height: f32) -> Snake {
-    let topspeed = 1;
+pub fn new_snake() -> Snake {
+    let speed = 0.1;
 
     let start_position = Vector2 {
-        x: rand::gen_range(0, height as i64).to_f32().unwrap(),
-        y: rand::gen_range(0, width as i64).to_f32().unwrap(),
+        x: rand::gen_range(-100, 100).to_f32().unwrap() / 100.0,
+        y: rand::gen_range(-100, 100).to_f32().unwrap() / 100.0,
     };
     let start_direction = Vector2 {
-        x: rand::gen_range(-topspeed, topspeed).to_f32().unwrap() / 100.0,
-        y: rand::gen_range(-topspeed, topspeed).to_f32().unwrap() / 100.0,
+        x: rand::gen_range(-speed, speed).to_f32().unwrap(),
+        y: rand::gen_range(-speed, speed).to_f32().unwrap(),
     };
 
     let first_part = Part {
@@ -52,20 +53,20 @@ pub fn new_snake(width: f32, height: f32) -> Snake {
     };
     Snake {
         parts: vec![first_part],
+        speed: speed,
     }
 }
 
 impl Snake {
-    pub fn add(&mut self, width: f32, height: f32) {
+    pub fn add(&mut self) {
         let last_part = &self.parts[self.parts.len() - 1];
-        let topspeed = 30;
         let rand_direction = Vector2 {
-            x: rand::gen_range(-topspeed, topspeed).to_f32().unwrap(),
-            y: rand::gen_range(-topspeed, topspeed).to_f32().unwrap(),
+            x: rand::gen_range(-self.speed, self.speed).to_f32().unwrap(),
+            y: rand::gen_range(-self.speed, self.speed).to_f32().unwrap(),
         };
         let mut new_location = last_part.location + last_part.direction;
 
-        check_edges(&mut new_location, width, height);
+        check_edges(&mut new_location);
 
         let mut new_color = rgb_to_hsl(last_part.color);
 
@@ -88,7 +89,7 @@ impl Snake {
                 part.location.y,
                 part.location.x + part.direction.x,
                 part.location.y + part.direction.y,
-                12.0,
+                0.01,
                 part.color,
             )
         }
