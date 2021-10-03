@@ -1,4 +1,4 @@
-use cgmath::{Deg, Rad, Rotation, Rotation2};
+use cgmath::{Deg, Matrix2, Point2, Rad, Rotation, Rotation2};
 use macroquad::prelude::*;
 use snake::Snake;
 mod snake;
@@ -13,15 +13,17 @@ async fn main() {
             zoom: vec2(zoom, screen_width() / screen_height()),
             ..Default::default()
         });
+
         //let deg: Deg<f32> = Deg(180.0);
 
-        //let bla: = Rotation2::from_angle(Rad(0.5f64 * std::f64::consts::PI))
+        //let bla: Matrix2<Point2<f32>> = Rotation2::from_angle(Rad(0.5f64 * std::f64::consts::PI));
 
-        //bla.rotate_vetor();
+        //bla.rotate_vetor(dir);
 
         if is_key_down(KeyCode::Right) {
             dir = dir + vec2(0.1, 0.1);
         }
+
         draw_line(location.x, location.y, dir.x, dir.y, 0.01, BLUE);
 
         set_default_camera();
