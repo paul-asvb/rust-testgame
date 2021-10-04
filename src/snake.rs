@@ -35,7 +35,7 @@ pub struct Snake {
 }
 
 pub fn new_snake() -> Snake {
-    let speed = 0.1;
+    let speed = 0.001;
 
     let start_position = Vector2 {
         x: rand::gen_range(-100, 100).to_f32().unwrap() / 100.0,
@@ -58,12 +58,9 @@ pub fn new_snake() -> Snake {
 }
 
 impl Snake {
-    pub fn add(&mut self) {
+    pub fn add(&mut self, new_direction: Vector2<f32>) {
         let last_part = &self.parts[self.parts.len() - 1];
-        let rand_direction = Vector2 {
-            x: rand::gen_range(-self.speed, self.speed).to_f32().unwrap(),
-            y: rand::gen_range(-self.speed, self.speed).to_f32().unwrap(),
-        };
+       
         let mut new_location = last_part.location + last_part.direction;
 
         check_edges(&mut new_location);
@@ -77,7 +74,7 @@ impl Snake {
 
         self.parts.push(Part {
             location: new_location,
-            direction: rand_direction,
+            direction: new_direction,
             color: hsl_to_rgb(new_color.0, new_color.1, new_color.2),
         })
     }
