@@ -8,8 +8,6 @@ mod snake;
 #[macroquad::main("BasicShapes")]
 async fn main() {
     let zoom = 1.0;
-    let location = Vector2::new(0.0, 0.0);
-    let mut dir = Vector2::new(0.05, 0.0);
     let mut snake = new_snake();
 
     loop {
@@ -19,19 +17,15 @@ async fn main() {
         });
 
         if is_key_down(KeyCode::Right) {
-            let rot = Basis2::from_angle(Deg(-5.0));
-            dir = rot.rotate_vector(dir);
+            snake.right();
         }
 
         if is_key_down(KeyCode::Left) {
-            let rot = Basis2::from_angle(Deg(5.0));
-            dir = rot.rotate_vector(dir);
+            snake.left();
         }
-        snake.add(dir);
+        snake.add();
 
         snake.draw();
-
-        draw_line(location.x, location.y, dir.x, dir.y, 0.01, BLUE);
 
         set_default_camera();
         next_frame().await

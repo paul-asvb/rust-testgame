@@ -1,10 +1,10 @@
-use cgmath::{num_traits::ToPrimitive, Vector2};
+use cgmath::{num_traits::ToPrimitive, Basis2, Deg, Point2, Rotation, Rotation2, Vector2};
 use macroquad::{
     color::{hsl_to_rgb, rgb_to_hsl},
     prelude::*,
 };
 
-fn check_edges(v: &mut Vector2<f32>) {
+fn check_edges(v: &mut Point2<f32>) {
     if v.x > 1.0 {
         v.x = -1.0;
     } else if v.x < -1.0 {
@@ -24,20 +24,21 @@ fn random_color() -> Color {
 }
 #[derive(Clone, Debug)]
 struct Part {
-    location: Vector2<f32>,
+    location: Point2<f32>,
     direction: Vector2<f32>,
     color: Color,
 }
 #[derive(Clone, Debug)]
 pub struct Snake {
     speed: f32,
+    direction: Vector2<f32>,
     parts: Vec<Part>,
 }
 
 pub fn new_snake() -> Snake {
     let speed = 0.001;
 
-    let start_position = Vector2 {
+    let start_position = Point2 {
         x: rand::gen_range(-100, 100).to_f32().unwrap() / 100.0,
         y: rand::gen_range(-100, 100).to_f32().unwrap() / 100.0,
     };
@@ -54,13 +55,14 @@ pub fn new_snake() -> Snake {
     Snake {
         parts: vec![first_part],
         speed: speed,
+        direction: start_direction,
     }
 }
 
 impl Snake {
-    pub fn add(&mut self, new_direction: Vector2<f32>) {
+    pub fn add(&mut self) {
         let last_part = &self.parts[self.parts.len() - 1];
-       
+
         let mut new_location = last_part.location + last_part.direction;
 
         check_edges(&mut new_location);
@@ -74,7 +76,7 @@ impl Snake {
 
         self.parts.push(Part {
             location: new_location,
-            direction: new_direction,
+            direction: self.direction,
             color: hsl_to_rgb(new_color.0, new_color.1, new_color.2),
         })
     }
@@ -90,5 +92,13 @@ impl Snake {
                 part.color,
             )
         }
+    }
+
+    pub fn right(&mut self) {
+        self.direction = Basis2::from_angle(Deg(-5.0)).rotate_vector(self.direction);
+    }
+
+    pub fn left(&mut self) {
+        self.direction = Basis2::from_angle(Deg(-5.0)).rotate_vector(self.direction);
     }
 }
