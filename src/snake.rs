@@ -4,6 +4,8 @@ use macroquad::{
     prelude::*,
 };
 
+const SPEED: f32 = 0.01;
+
 fn check_edges(v: &mut Point2<f32>) {
     if v.x > 1.0 {
         v.x = -1.0;
@@ -36,16 +38,16 @@ pub struct Snake {
 }
 
 pub fn new_snake() -> Snake {
-    let speed = 0.001;
-
     let start_position = Point2 {
         x: rand::gen_range(-100, 100).to_f32().unwrap() / 100.0,
         y: rand::gen_range(-100, 100).to_f32().unwrap() / 100.0,
     };
     let start_direction = Vector2 {
-        x: rand::gen_range(-speed, speed).to_f32().unwrap(),
-        y: rand::gen_range(-speed, speed).to_f32().unwrap(),
+        x: rand::gen_range(-SPEED, SPEED).to_f32().unwrap(),
+        y: rand::gen_range(-SPEED, SPEED).to_f32().unwrap(),
     };
+
+    println!("{:?}", start_position);
 
     let first_part = Part {
         location: start_position,
@@ -54,7 +56,7 @@ pub fn new_snake() -> Snake {
     };
     Snake {
         parts: vec![first_part],
-        speed: speed,
+        speed: SPEED,
         direction: start_direction,
     }
 }
@@ -99,6 +101,6 @@ impl Snake {
     }
 
     pub fn left(&mut self) {
-        self.direction = Basis2::from_angle(Deg(-5.0)).rotate_vector(self.direction);
+        self.direction = Basis2::from_angle(Deg(5.0)).rotate_vector(self.direction);
     }
 }

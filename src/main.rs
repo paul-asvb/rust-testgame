@@ -1,8 +1,5 @@
-use cgmath::{
-    num_traits::float, Basis2, Deg, Matrix2, Point2, Rad, Rotation, Rotation2, Vector1, Vector2,
-};
 use macroquad::prelude::*;
-use snake::{new_snake, Snake};
+use snake::new_snake;
 mod snake;
 
 #[macroquad::main("BasicShapes")]
@@ -23,6 +20,7 @@ async fn main() {
         if is_key_down(KeyCode::Left) {
             snake.left();
         }
+
         snake.add();
 
         snake.draw();
