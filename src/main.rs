@@ -6,7 +6,7 @@ mod snake;
 #[macroquad::main("BasicShapes")]
 async fn main() {
     let zoom = 1.0;
-    let mut game = game::init_game(1);
+    let mut game = game::init_game(10);
    
 
     loop {
