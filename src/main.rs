@@ -7,7 +7,6 @@ mod snake;
 async fn main() {
     let zoom = 1.0;
     let mut game = game::init_game(10);
-   
 
     loop {
         set_camera(&Camera2D {
@@ -15,10 +14,9 @@ async fn main() {
             ..Default::default()
         });
 
-        game.update();
+        game.render();
 
-
-        set_default_camera();
+        //set_default_camera();
         next_frame().await
     }
 }

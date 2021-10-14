@@ -1,8 +1,5 @@
 use cgmath::{num_traits::ToPrimitive, Basis2, Deg, Point2, Rotation, Rotation2, Vector2};
-use macroquad::{
-    color::{hsl_to_rgb},
-    prelude::*,
-};
+use macroquad::{color::hsl_to_rgb, prelude::*};
 
 const SPEED: f32 = 0.01;
 const THICKNESS: f32 = 0.01;
@@ -80,7 +77,7 @@ impl Snake {
         })
     }
 
-    pub fn draw(&self) {
+    pub fn render(&self) {
         for part in &self.parts {
             draw_circle(part.location.x, part.location.y, THICKNESS, self.color)
         }

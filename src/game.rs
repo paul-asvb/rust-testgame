@@ -12,8 +12,7 @@ pub fn init_game(number_of_snakes: i8) -> Game {
 }
 
 impl Game {
-    pub fn update(&mut self) {
-
+    pub fn render(&mut self) {
         for snake in self.snakes.iter_mut() {
             if is_key_down(KeyCode::Right) {
                 snake.right();
@@ -25,7 +24,7 @@ impl Game {
 
             snake.add();
 
-            snake.draw();
+            snake.render();
         }
     }
 }
