@@ -78,9 +78,9 @@ impl Snake {
     }
 
     pub fn render(&self) {
-        for part in &self.parts {
-            draw_circle(part.location.x, part.location.y, THICKNESS, self.color)
-        }
+        //for part in &self.parts {
+        //    draw_circle(part.location.x, part.location.y, THICKNESS, self.color)
+        //}
 
         let last_part = &self.parts[self.parts.len() - 1];
         draw_circle(

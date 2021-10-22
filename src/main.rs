@@ -9,10 +9,12 @@ async fn main() {
     let mut game = game::init_game(10);
 
     loop {
-        set_camera(&Camera2D {
-            zoom: vec2(zoom, screen_width() / screen_height() * zoom),
+        //clear_background(RED);
+        /*set_camera(&Camera2D {
+            zoom: vec2(zoom, zoom),
             ..Default::default()
-        });
+        });*/
+        //set_default_camera();
 
         game.render();
 
