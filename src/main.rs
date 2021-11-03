@@ -1,4 +1,3 @@
-use game::Game;
 use macroquad::prelude::*;
 mod game;
 mod snake;
