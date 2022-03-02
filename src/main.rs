@@ -13,7 +13,6 @@ async fn main() {
             zoom: vec2(zoom, zoom),
             ..Default::default()
         });
-       // set_default_camera();
 
         game.render();
 
