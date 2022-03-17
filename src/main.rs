@@ -1,10 +1,10 @@
-use macroquad::prelude::*;
+use macroquad::{prelude::*, ui::root_ui};
 mod game;
 mod snake;
 
 #[macroquad::main("zatake")]
 async fn main() {
-    let zoom = 1000.0;
+    //let zoom = 1000.0;
     //let mut game = game::init_game(100);
     let mut y = 100.0;
 
@@ -14,6 +14,7 @@ async fn main() {
         //     zoom: vec2(zoom, zoom),
         //     ..Default::default()
         // });
+        root_ui().label(None, "hello megaui");
 
         //clear_background(RED);
 
